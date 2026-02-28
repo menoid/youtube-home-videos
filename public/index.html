@@ -279,13 +279,17 @@
   }
 
   function onPlayerStateChange(event) {
-    // PLAYING = 1: unmute if user has interacted
-    if (event.data === 1 && userHasInteracted && player.isMuted()) {
-      player.unMute();
-    }
     // ENDED = 0: auto-next
     if (event.data === 0) {
       next();
+    }
+  }
+
+  function onPlayerError(event) {
+    // If autoplay blocked, retry muted
+    if (!player.isMuted()) {
+      player.mute();
+      player.playVideo();
     }
   }
 
@@ -293,12 +297,11 @@
     if (player) {
       player.loadVideoById(videoId);
     } else {
-      // Create player for first time
+      // Try without mute first — browser may allow it
       player = new YT.Player('yt-player', {
         videoId: videoId,
         playerVars: {
           autoplay: 1,
-          mute: 1,
           controls: 0,
           modestbranding: 1,
           rel: 0,
@@ -309,7 +312,17 @@
           cc_load_policy: 0
         },
         events: {
-          onStateChange: onPlayerStateChange
+          onStateChange: onPlayerStateChange,
+          onError: onPlayerError,
+          onReady: (e) => {
+            // If not playing after 1s, autoplay was blocked — mute and retry
+            setTimeout(() => {
+              if (player.getPlayerState() !== 1) {
+                player.mute();
+                player.playVideo();
+              }
+            }, 1000);
+          }
         }
       });
     }
