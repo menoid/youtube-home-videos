@@ -200,9 +200,21 @@
   let current = null, seenIds = new Set(), viewCount = 0;
   let player = null;
   let ytReady = false;
+  let userHasInteracted = false;
 
   // YouTube IFrame API callback
   window.onYouTubeIframeAPIReady = () => { ytReady = true; };
+
+  // Unmute on first user interaction
+  function onFirstInteraction() {
+    if (userHasInteracted) return;
+    userHasInteracted = true;
+    if (player && player.isMuted()) player.unMute();
+    document.removeEventListener("click", onFirstInteraction);
+    document.removeEventListener("keydown", onFirstInteraction);
+  }
+  document.addEventListener("click", onFirstInteraction);
+  document.addEventListener("keydown", onFirstInteraction);
 
   function getStore() {
     try { return JSON.parse(localStorage.getItem("yt-feed-store") || "{}"); }
@@ -267,7 +279,11 @@
   }
 
   function onPlayerStateChange(event) {
-    // YT.PlayerState.ENDED === 0
+    // PLAYING = 1: unmute if user has interacted
+    if (event.data === 1 && userHasInteracted && player.isMuted()) {
+      player.unMute();
+    }
+    // ENDED = 0: auto-next
     if (event.data === 0) {
       next();
     }
