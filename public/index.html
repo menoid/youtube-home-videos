@@ -5,46 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home Videos</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       background: #f5f3f0;
       color: #1a1a1a;
-      font-family: 'Space Mono', monospace;
+      font-family: 'Inter', sans-serif;
       height: 100%;
       overflow: hidden;
     }
 
-    /* --- Top --- */
     #top {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 20;
       padding: 24px 32px 0;
     }
 
     #top h1 {
       font-size: 32px;
-      font-weight: 700;
+      font-weight: 600;
       line-height: 1.1;
       text-transform: uppercase;
+      letter-spacing: -0.02em;
     }
 
-    /* small text = everything else */
-    .sm {
-      font-size: 11px;
-      color: #999;
-    }
+    .sm { font-size: 11px; color: #999; }
 
-    /* --- Filters --- */
     #filters {
       position: fixed;
-      top: 68px;
-      left: 32px;
+      top: 66px; left: 32px;
       z-index: 20;
       display: flex;
       gap: 16px;
@@ -63,13 +55,9 @@
       accent-color: #1a1a1a;
     }
 
-    /* --- Player area --- */
     #player-area {
       position: fixed;
-      top: 100px;
-      bottom: 40px;
-      left: 0;
-      right: 0;
+      top: 100px; bottom: 40px; left: 0; right: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -83,7 +71,7 @@
       justify-content: center;
       cursor: pointer;
       font-size: 48px;
-      font-weight: 700;
+      font-weight: 600;
       color: #ccc;
       transition: color 0.15s;
       user-select: none;
@@ -145,18 +133,14 @@
     .star.filled { color: #1a1a1a; }
     .star:hover { color: #888; }
 
-    /* --- Bottom --- */
     #bottom {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       padding: 10px 32px;
       display: flex;
       justify-content: space-between;
     }
 
-    /* Loading */
     #loading {
       position: fixed;
       inset: 0;
@@ -166,7 +150,6 @@
       background: #f5f3f0;
       z-index: 100;
     }
-
     #loading.hidden { display: none; }
   </style>
 </head>
@@ -189,9 +172,9 @@
 <div id="player-area">
   <div class="nav-arrow" onclick="prev()">&#8592;</div>
   <div id="video-wrap">
-    <div id="video-frame"></div>
+    <div id="video-frame"><div id="yt-player"></div></div>
     <div id="info">
-      <span class="sm"><span id="vid-title" style="color:#1a1a1a;font-weight:700"></span> <span id="vid-meta"></span></span>
+      <span class="sm"><span id="vid-title" style="color:#1a1a1a;font-weight:600"></span> <span id="vid-meta"></span></span>
       <span style="display:flex;align-items:center;gap:10px">
         <span id="rating"></span>
         <span id="btn-fav" onclick="toggleFavorite()">&#9829;</span>
@@ -206,12 +189,20 @@
   <span>&#8592;/&#8594; navigate &middot; 1-5 rate &middot; F fav &middot; 0 reject</span>
 </div>
 
+<!-- YouTube IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
   const CAM_RE = /^(MVI|DSC[N]?|IMG|MOV|VID|SAM|SDV|P10|DSCF|M2U|MAH|C00|video)[_ ]?\d/i;
   const EXT_RE = /\.(mov|avi|mpg|mpeg|wmv|3gp|mp4|mts|vob|flv)$/i;
 
   let rawVideos = [], allVideos = [], queue = [], history = [];
   let current = null, seenIds = new Set(), viewCount = 0;
+  let player = null;
+  let ytReady = false;
+
+  // YouTube IFrame API callback
+  window.onYouTubeIframeAPIReady = () => { ytReady = true; };
 
   function getStore() {
     try { return JSON.parse(localStorage.getItem("yt-feed-store") || "{}"); }
@@ -251,7 +242,8 @@
     document.getElementById("filter-count").textContent = `${allVideos.length} / ${rawVideos.length}`;
     if (allVideos.length > 0) showVideo(queue.shift());
     else {
-      document.getElementById("video-frame").innerHTML = '';
+      if (player) { player.destroy(); player = null; }
+      document.getElementById("video-frame").innerHTML = '<div id="yt-player"></div>';
       document.getElementById("vid-title").textContent = "No results";
       document.getElementById("vid-meta").textContent = "";
     }
@@ -274,9 +266,37 @@
     if (queue.length < 5) queue.push(...shuffle(allVideos.filter(v => !seenIds.has(v.id))));
   }
 
-  function createEmbed(id) {
-    return `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0"
-            allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  function onPlayerStateChange(event) {
+    // YT.PlayerState.ENDED === 0
+    if (event.data === 0) {
+      next();
+    }
+  }
+
+  function playVideo(videoId) {
+    if (player) {
+      player.loadVideoById(videoId);
+    } else {
+      // Create player for first time
+      player = new YT.Player('yt-player', {
+        videoId: videoId,
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1,
+          iv_load_policy: 3,
+          disablekb: 1,
+          fs: 0,
+          cc_load_policy: 0
+        },
+        events: {
+          onStateChange: onPlayerStateChange
+        }
+      });
+    }
   }
 
   function showVideo(video) {
@@ -289,7 +309,7 @@
     document.getElementById("counter").textContent = `${viewCount} viewed`;
     renderRating(meta.rating || -1);
     document.getElementById("btn-fav").classList.toggle("active", !!meta.favorited);
-    document.getElementById("video-frame").innerHTML = createEmbed(video.id);
+    playVideo(video.id);
     fillQueue();
   }
 
@@ -311,7 +331,14 @@
     else if(e.key==="0") rateVideo(0);
   });
 
-  (async()=>{ await loadData(); document.getElementById("loading").classList.add("hidden"); applyFilters(); })();
+  // Wait for both data and YT API
+  (async () => {
+    await loadData();
+    // Wait for YT API if not ready yet
+    while (!ytReady) await new Promise(r => setTimeout(r, 50));
+    document.getElementById("loading").classList.add("hidden");
+    applyFilters();
+  })();
 </script>
 </body>
 </html>
