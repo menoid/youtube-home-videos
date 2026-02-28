@@ -17,97 +17,57 @@
       overflow: hidden;
     }
 
-    /* --- Header --- */
-    #header {
+    /* --- Top --- */
+    #top {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 20;
-      padding: 20px 32px 16px;
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
+      padding: 24px 32px 0;
     }
 
-    #header h1 {
-      font-size: 11px;
+    #top h1 {
+      font-size: 32px;
       font-weight: 700;
-      letter-spacing: 0.15em;
+      line-height: 1.1;
       text-transform: uppercase;
-      color: #1a1a1a;
     }
 
-    #header .count {
-      font-size: 10px;
+    /* small text = everything else */
+    .sm {
+      font-size: 11px;
       color: #999;
-      letter-spacing: 0.05em;
     }
 
-    /* --- Filter bar --- */
+    /* --- Filters --- */
     #filters {
       position: fixed;
-      top: 52px;
-      left: 0;
-      right: 0;
+      top: 68px;
+      left: 32px;
       z-index: 20;
-      padding: 0 32px 12px;
       display: flex;
+      gap: 16px;
       align-items: center;
-      gap: 20px;
-      font-size: 10px;
-      letter-spacing: 0.04em;
     }
 
     #filters label {
-      color: #888;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       cursor: pointer;
-      transition: color 0.15s;
-    }
-
-    #filters label:hover { color: #444; }
-
-    #filters input[type="checkbox"] {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 12px;
-      height: 12px;
-      border: 1.5px solid #bbb;
-      border-radius: 2px;
-      cursor: pointer;
-      position: relative;
-      top: 0px;
-    }
-
-    #filters input[type="checkbox"]:checked {
-      background: #1a1a1a;
-      border-color: #1a1a1a;
     }
 
     #filters input[type="range"] {
-      width: 60px;
+      width: 50px;
       accent-color: #1a1a1a;
-      height: 2px;
     }
 
-    #filters .val {
-      color: #aaa;
-      min-width: 16px;
-      text-align: right;
-    }
-
-    #filters .sep {
-      color: #ddd;
-    }
-
-    /* --- Main layout --- */
+    /* --- Player area --- */
     #player-area {
       position: fixed;
-      top: 80px;
-      bottom: 0;
+      top: 100px;
+      bottom: 40px;
       left: 0;
       right: 0;
       display: flex;
@@ -115,17 +75,17 @@
       justify-content: center;
     }
 
-    /* Nav arrows */
     .nav-arrow {
-      width: 80px;
+      width: 100px;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 20px;
+      font-size: 48px;
+      font-weight: 700;
       color: #ccc;
-      transition: color 0.2s;
+      transition: color 0.15s;
       user-select: none;
       flex-shrink: 0;
     }
@@ -133,7 +93,6 @@
     .nav-arrow:hover { color: #666; }
     .nav-arrow:active { color: #1a1a1a; }
 
-    /* Video container */
     #video-wrap {
       flex: 1;
       max-width: 780px;
@@ -142,7 +101,6 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 0 0 40px;
     }
 
     #video-frame {
@@ -151,7 +109,6 @@
       background: #000;
       overflow: hidden;
       position: relative;
-      box-shadow: 0 4px 40px rgba(0,0,0,0.12);
     }
 
     #video-frame iframe {
@@ -161,83 +118,42 @@
       border: none;
     }
 
-    /* Info below video */
     #info {
       width: 100%;
-      padding: 14px 0 0;
+      padding: 10px 0 0;
       display: flex;
-      align-items: flex-start;
       justify-content: space-between;
-      gap: 20px;
+      align-items: baseline;
     }
 
-    #info .left {
-      flex: 1;
-      min-width: 0;
-    }
-
-    #vid-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #1a1a1a;
-      letter-spacing: 0.02em;
-    }
-
-    #vid-meta {
-      font-size: 10px;
-      color: #999;
-      margin-top: 3px;
-      letter-spacing: 0.02em;
-    }
-
-    #info .right {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-shrink: 0;
-    }
-
-    /* Fav button */
     #btn-fav {
       font-size: 16px;
       cursor: pointer;
       color: #ccc;
       transition: color 0.15s;
-      line-height: 1;
     }
-
     #btn-fav:hover { color: #999; }
     #btn-fav.active { color: #c44; }
 
-    /* Rating */
-    #rating {
-      display: flex;
-      gap: 1px;
-    }
-
+    #rating { display: flex; gap: 1px; }
     .star {
       font-size: 13px;
       cursor: pointer;
       color: #ddd;
       transition: color 0.15s;
-      line-height: 1;
     }
-
     .star.filled { color: #1a1a1a; }
     .star:hover { color: #888; }
 
-    /* Bottom bar */
+    /* --- Bottom --- */
     #bottom {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      padding: 12px 32px;
+      padding: 10px 32px;
       display: flex;
       justify-content: space-between;
-      font-size: 9px;
-      color: #ccc;
-      letter-spacing: 0.06em;
     }
 
     /* Loading */
@@ -249,101 +165,59 @@
       justify-content: center;
       background: #f5f3f0;
       z-index: 100;
-      font-size: 11px;
-      color: #bbb;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
     }
 
     #loading.hidden { display: none; }
-
-    /* No results */
-    .no-results {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      color: #ccc;
-      font-size: 11px;
-      letter-spacing: 0.05em;
-    }
   </style>
 </head>
 <body>
 
-<div id="loading">Loading...</div>
+<div id="loading" class="sm">Loading...</div>
 
-<div id="header">
+<div id="top">
   <h1>Home Videos</h1>
-  <span class="count" id="filter-count"></span>
 </div>
 
-<div id="filters">
-  <label>
-    <input type="checkbox" id="f-cam" checked>
-    Camera names
-  </label>
-  <span class="sep">/</span>
-  <label>
-    <input type="checkbox" id="f-ext">
-    File extension
-  </label>
-  <span class="sep">/</span>
-  <label>
-    Words <span class="val" id="f-words-val">4</span>
-    <input type="range" id="f-words" min="1" max="10" value="4">
-  </label>
-  <span class="sep">/</span>
-  <label>
-    Views <span class="val" id="f-views-val">2k</span>
-    <input type="range" id="f-views" min="0" max="2000" value="2000" step="100">
-  </label>
+<div id="filters" class="sm">
+  <label><input type="checkbox" id="f-cam" checked> camera names</label>
+  <label><input type="checkbox" id="f-ext"> file ext</label>
+  <label>words <span id="f-words-val">4</span> <input type="range" id="f-words" min="1" max="10" value="4"></label>
+  <label>views <span id="f-views-val">2k</span> <input type="range" id="f-views" min="0" max="2000" value="2000" step="100"></label>
+  <span id="filter-count"></span>
 </div>
 
 <div id="player-area">
-  <div class="nav-arrow" id="nav-prev" onclick="prev()">&#8592;</div>
-
+  <div class="nav-arrow" onclick="prev()">&#8592;</div>
   <div id="video-wrap">
     <div id="video-frame"></div>
     <div id="info">
-      <div class="left">
-        <div id="vid-title"></div>
-        <div id="vid-meta"></div>
-      </div>
-      <div class="right">
-        <div id="rating"></div>
+      <span class="sm"><span id="vid-title" style="color:#1a1a1a;font-weight:700"></span> <span id="vid-meta"></span></span>
+      <span style="display:flex;align-items:center;gap:10px">
+        <span id="rating"></span>
         <span id="btn-fav" onclick="toggleFavorite()">&#9829;</span>
-      </div>
+      </span>
     </div>
   </div>
-
-  <div class="nav-arrow" id="nav-next" onclick="next()">&#8594;</div>
+  <div class="nav-arrow" onclick="next()">&#8594;</div>
 </div>
 
-<div id="bottom">
+<div id="bottom" class="sm">
   <span id="counter"></span>
-  <span>&#8592; / &#8594; navigate &middot; 1-5 rate &middot; F fav &middot; 0 reject</span>
+  <span>&#8592;/&#8594; navigate &middot; 1-5 rate &middot; F fav &middot; 0 reject</span>
 </div>
 
 <script>
   const CAM_RE = /^(MVI|DSC[N]?|IMG|MOV|VID|SAM|SDV|P10|DSCF|M2U|MAH|C00|video)[_ ]?\d/i;
   const EXT_RE = /\.(mov|avi|mpg|mpeg|wmv|3gp|mp4|mts|vob|flv)$/i;
 
-  let rawVideos = [];
-  let allVideos = [];
-  let queue = [];
-  let history = [];
-  let current = null;
-  let seenIds = new Set();
-  let viewCount = 0;
+  let rawVideos = [], allVideos = [], queue = [], history = [];
+  let current = null, seenIds = new Set(), viewCount = 0;
 
   function getStore() {
     try { return JSON.parse(localStorage.getItem("yt-feed-store") || "{}"); }
     catch { return {}; }
   }
-  function saveStore(store) {
-    localStorage.setItem("yt-feed-store", JSON.stringify(store));
-  }
+  function saveStore(s) { localStorage.setItem("yt-feed-store", JSON.stringify(s)); }
 
   function shuffle(arr) {
     const a = [...arr];
@@ -354,164 +228,90 @@
     return a;
   }
 
-  function wordCount(title) {
-    return title.trim().split(/[\s_\-\.]+/).filter(Boolean).length;
-  }
+  function wordCount(t) { return t.trim().split(/[\s_\-\.]+/).filter(Boolean).length; }
+  function fmtViews(n) { return n >= 1000 ? (n/1000).toFixed(n>=10000?0:1)+"k" : String(n); }
 
-  function formatViews(n) {
-    if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1) + "k";
-    return String(n);
-  }
-
-  // --- Filters ---
   function applyFilters() {
-    const camOnly = document.getElementById("f-cam").checked;
-    const maxWords = parseInt(document.getElementById("f-words").value);
-    const maxViews = parseInt(document.getElementById("f-views").value);
-    const extOnly = document.getElementById("f-ext").checked;
+    const cam = document.getElementById("f-cam").checked;
+    const ext = document.getElementById("f-ext").checked;
+    const maxW = parseInt(document.getElementById("f-words").value);
+    const maxV = parseInt(document.getElementById("f-views").value);
     const store = getStore();
 
     allVideos = rawVideos.filter(v => {
       if ((store[v.id]?.rating ?? -1) === 0) return false;
-      if (camOnly && !CAM_RE.test(v.title)) return false;
-      if (wordCount(v.title) > maxWords) return false;
-      if (v.views > maxViews) return false;
-      if (extOnly && !EXT_RE.test(v.title)) return false;
+      if (cam && !CAM_RE.test(v.title)) return false;
+      if (ext && !EXT_RE.test(v.title)) return false;
+      if (wordCount(v.title) > maxW) return false;
+      if (v.views > maxV) return false;
       return true;
     });
 
-    seenIds.clear();
-    queue = shuffle(allVideos);
-    history = [];
-
-    document.getElementById("filter-count").textContent =
-      `${allVideos.length} of ${rawVideos.length}`;
-
-    if (allVideos.length > 0) {
-      showVideo(queue.shift(), "next");
-    } else {
-      document.getElementById("video-frame").innerHTML =
-        '<div class="no-results">No videos match current filters</div>';
-      document.getElementById("vid-title").textContent = "";
+    seenIds.clear(); queue = shuffle(allVideos); history = [];
+    document.getElementById("filter-count").textContent = `${allVideos.length} / ${rawVideos.length}`;
+    if (allVideos.length > 0) showVideo(queue.shift());
+    else {
+      document.getElementById("video-frame").innerHTML = '';
+      document.getElementById("vid-title").textContent = "No results";
       document.getElementById("vid-meta").textContent = "";
     }
   }
 
   document.getElementById("f-cam").addEventListener("change", applyFilters);
   document.getElementById("f-ext").addEventListener("change", applyFilters);
-
-  document.getElementById("f-words").addEventListener("input", (e) => {
+  document.getElementById("f-words").addEventListener("input", e => {
     document.getElementById("f-words-val").textContent = e.target.value;
     applyFilters();
   });
-
-  document.getElementById("f-views").addEventListener("input", (e) => {
-    document.getElementById("f-views-val").textContent = formatViews(parseInt(e.target.value));
+  document.getElementById("f-views").addEventListener("input", e => {
+    document.getElementById("f-views-val").textContent = fmtViews(parseInt(e.target.value));
     applyFilters();
   });
 
-  // --- Data ---
-  async function loadData() {
-    const res = await fetch("data.json");
-    rawVideos = await res.json();
-  }
+  async function loadData() { rawVideos = await (await fetch("data.json")).json(); }
 
   function fillQueue() {
-    if (queue.length < 5) {
-      const fresh = shuffle(allVideos.filter(v => !seenIds.has(v.id)));
-      queue.push(...fresh);
-    }
+    if (queue.length < 5) queue.push(...shuffle(allVideos.filter(v => !seenIds.has(v.id))));
   }
 
-  function createEmbed(videoId) {
-    return `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0"
+  function createEmbed(id) {
+    return `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0"
             allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
   }
 
   function showVideo(video) {
     if (!video) return;
-    current = video;
-    seenIds.add(video.id);
-    viewCount++;
-
-    const store = getStore();
-    const meta = store[video.id] || {};
-
+    current = video; seenIds.add(video.id); viewCount++;
+    const store = getStore(), meta = store[video.id] || {};
     document.getElementById("vid-title").textContent = video.title;
     document.getElementById("vid-meta").textContent =
-      `${video.channel || "Unknown"} \u00b7 ${video.views?.toLocaleString() || "?"} views \u00b7 ${video.published || ""}`;
+      `\u2014 ${video.channel || "?"} \u00b7 ${video.views?.toLocaleString()||"?"} views \u00b7 ${video.published||""}`;
     document.getElementById("counter").textContent = `${viewCount} viewed`;
-
     renderRating(meta.rating || -1);
     document.getElementById("btn-fav").classList.toggle("active", !!meta.favorited);
-
     document.getElementById("video-frame").innerHTML = createEmbed(video.id);
     fillQueue();
   }
 
-  function next() {
-    if (queue.length === 0) fillQueue();
-    if (queue.length === 0) return;
-    if (current) history.push(current);
-    showVideo(queue.shift());
-  }
+  function next() { if(!queue.length) fillQueue(); if(!queue.length) return; if(current) history.push(current); showVideo(queue.shift()); }
+  function prev() { if(!history.length) return; if(current) queue.unshift(current); showVideo(history.pop()); }
 
-  function prev() {
-    if (history.length === 0) return;
-    if (current) queue.unshift(current);
-    showVideo(history.pop());
+  function renderRating(r) {
+    const c = document.getElementById("rating"); c.innerHTML = "";
+    for (let i=1;i<=5;i++) { const s=document.createElement("span"); s.className=`star ${i<=r?"filled":""}`; s.textContent="\u2605"; s.onclick=()=>rateVideo(i); c.appendChild(s); }
   }
+  function rateVideo(r) { if(!current) return; const s=getStore(); s[current.id]={...(s[current.id]||{}),rating:r}; saveStore(s); renderRating(r); if(r===0) next(); }
+  function toggleFavorite() { if(!current) return; const s=getStore(),m=s[current.id]||{}; m.favorited=!m.favorited; s[current.id]=m; saveStore(s); document.getElementById("btn-fav").classList.toggle("active",m.favorited); }
 
-  // Rating
-  function renderRating(rating) {
-    const container = document.getElementById("rating");
-    container.innerHTML = "";
-    for (let i = 1; i <= 5; i++) {
-      const star = document.createElement("span");
-      star.className = `star ${i <= rating ? "filled" : ""}`;
-      star.textContent = "\u2605";
-      star.onclick = () => rateVideo(i);
-      container.appendChild(star);
-    }
-  }
-
-  function rateVideo(rating) {
-    if (!current) return;
-    const store = getStore();
-    store[current.id] = { ...(store[current.id] || {}), rating };
-    saveStore(store);
-    renderRating(rating);
-    if (rating === 0) next();
-  }
-
-  function toggleFavorite() {
-    if (!current) return;
-    const store = getStore();
-    const meta = store[current.id] || {};
-    meta.favorited = !meta.favorited;
-    store[current.id] = meta;
-    saveStore(store);
-    document.getElementById("btn-fav").classList.toggle("active", meta.favorited);
-  }
-
-  // Keyboard
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight" || e.key === " " || e.key === "j") { e.preventDefault(); next(); }
-    else if (e.key === "ArrowLeft" || e.key === "k") { e.preventDefault(); prev(); }
-    else if (e.key === "f") toggleFavorite();
-    else if (e.key >= "1" && e.key <= "5") rateVideo(parseInt(e.key));
-    else if (e.key === "0") rateVideo(0);
+  document.addEventListener("keydown", e => {
+    if(e.key==="ArrowRight"||e.key===" "||e.key==="j"){e.preventDefault();next();}
+    else if(e.key==="ArrowLeft"||e.key==="k"){e.preventDefault();prev();}
+    else if(e.key==="f") toggleFavorite();
+    else if(e.key>="1"&&e.key<="5") rateVideo(parseInt(e.key));
+    else if(e.key==="0") rateVideo(0);
   });
 
-  // Init
-  async function init() {
-    await loadData();
-    document.getElementById("loading").classList.add("hidden");
-    applyFilters();
-  }
-
-  init();
+  (async()=>{ await loadData(); document.getElementById("loading").classList.add("hidden"); applyFilters(); })();
 </script>
-
 </body>
 </html>
