@@ -17,26 +17,21 @@
       overflow: hidden;
     }
 
-    #top {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 20;
-      padding: 24px 32px 0;
-    }
-
-    #top h1 {
+    #title {
+      width: 100%;
       font-size: 32px;
       font-weight: 600;
       line-height: 1.1;
       text-transform: uppercase;
       letter-spacing: -0.02em;
+      padding-bottom: 12px;
     }
 
     .sm { font-size: 11px; color: #999; }
 
     #filters {
       position: fixed;
-      top: 66px; left: 32px;
+      top: 16px; left: 32px;
       z-index: 20;
       display: flex;
       gap: 16px;
@@ -57,7 +52,7 @@
 
     #player-area {
       position: fixed;
-      top: 100px; bottom: 40px; left: 0; right: 0;
+      top: 44px; bottom: 40px; left: 0; right: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -249,13 +244,9 @@
 
 <div id="loading" class="sm">Loading...</div>
 
-<div id="top">
-  <h1>Untracked Files</h1>
-</div>
-
 <div id="filters" class="sm">
   <label><input type="checkbox" id="f-cam" checked> camera names</label>
-  <label><input type="checkbox" id="f-ext"> file ext</label>
+  <label><input type="checkbox" id="f-ext" checked> file ext</label>
   <label>words <span id="f-words-val">4</span> <input type="range" id="f-words" min="1" max="10" value="4"></label>
   <label>views <span id="f-views-val">2k</span> <input type="range" id="f-views" min="0" max="2000" value="2000" step="100"></label>
   <span id="filter-count"></span>
@@ -264,6 +255,7 @@
 <div id="player-area">
   <div class="nav-arrow" onclick="prev()">&#8592;</div>
   <div id="video-wrap">
+    <h1 id="title">Untracked Files</h1>
     <div id="video-frame"><div id="yt-player"></div></div>
     <div id="controls">
       <div id="btn-play" onclick="togglePlay()">&#9654;</div>
